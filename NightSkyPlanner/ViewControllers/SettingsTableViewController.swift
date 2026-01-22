@@ -8,6 +8,20 @@
 import UIKit
 
 final class SettingsTableViewController: UITableViewController {
+    
+    // MARK: menu sections
+    private var sections = [
+        Section(title: "General", rows: [
+            Row(title: "Location", style: .disclosure, value: nil),
+            Row(title: "Night mode", style: .switchToggle, value: true),
+            Row(title: "Notification", style: .switchToggle, value: false)
+        ]),
+        Section(title: "About", rows: [
+            Row(title: "Purpose", style: .disclosure, value: nil),
+            Row(title: "About Author", style: .disclosure, value: nil),
+            Row(title: "Buy me a ☕️", style: .button, value: nil)
+        ])
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,67 +34,59 @@ final class SettingsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return sections[section].rows.count
     }
-
-    /*
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].title
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+        let row = sections[indexPath.section].rows[indexPath.row]
+        
+        switch row.style {
+        case .switchToggle:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            
+            let toggle = UISwitch()
+            toggle.isOn = (row.value as? Bool) ?? false
+            toggle.tag = indexPath.section * 1000 + indexPath.row
+            toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+            // save indexPath in property to keep track of what exactly changed
+            
+            cell.accessoryView = toggle
+            return cell
+            
+        case .disclosure:
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            cell.accessoryType = .disclosureIndicator
+            return cell
+            
+        case .button:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            cell.textLabel?.textColor = .systemOrange
+            return cell
+        }
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    // MARK: Actions
+    @objc private func switchToggled(_ sender: UISwitch) {
+        // decode indexPath from tag
+        let section = sender.tag / 1000
+        let row = sender.tag % 1000
+        
+        // update value in model
+        if section < sections.count && row < sections[section].rows.count {
+            sections[section].rows[row].value = sender.isOn
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
