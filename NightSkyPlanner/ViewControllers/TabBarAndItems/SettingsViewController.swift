@@ -200,9 +200,24 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
             
         case .button:
-            let coffeeVC = CoffeeViewController()
-            coffeeVC.view.backgroundColor = .systemBackground
-            navigationController?.pushViewController(coffeeVC, animated: true)
+            if row.title == "Buy me a ☕️" {
+                // modal
+                let coffeeVC = CoffeeViewController()
+                
+                coffeeVC.modalPresentationStyle = .pageSheet
+                if let sheet = coffeeVC.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                    sheet.prefersGrabberVisible = true
+                    sheet.preferredCornerRadius = 20
+                } else {
+                    coffeeVC.modalPresentationStyle = .formSheet
+                }
+                
+                coffeeVC.view.backgroundColor = .systemBackground
+                
+                coffeeVC.modalTransitionStyle = .coverVertical
+                present(coffeeVC, animated: true)
+            }
         case .rowValue:
             print("nothing here")
         default:
