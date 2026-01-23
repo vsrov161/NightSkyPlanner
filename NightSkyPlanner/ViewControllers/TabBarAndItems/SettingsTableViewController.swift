@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class SettingsTableViewController: UITableViewController {
+final class SettingsTableViewController: UITableViewController, UINavigationControllerDelegate {
     
     // MARK: menu sections
     private var sections = [
         Section(title: "General", rows: [
-            Row(title: "Location", style: .rowWSubtitle, value: nil),
+            Row(title: "Location", style: .rowWithSubtitle, value: nil),
             Row(title: "Night mode", style: .switchToggle, value: false),
             Row(title: "Notifications", style: .switchToggle, value: false)
         ]),
@@ -24,12 +24,21 @@ final class SettingsTableViewController: UITableViewController {
         ])
     ]
 
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Settings"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
+        
+        navigationController?.delegate = self
+        
         setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.sizeToFit()
     }
 
     // MARK: - Table view data source
@@ -46,6 +55,7 @@ final class SettingsTableViewController: UITableViewController {
         return sections[section].title
     }
     
+    // MARK: Cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
         
@@ -83,7 +93,7 @@ final class SettingsTableViewController: UITableViewController {
             // create config
             var content = cell.defaultContentConfiguration()
             content.text = row.title
-            content.textProperties.color = .blue
+            content.textProperties.color = .green
             
             cell.contentConfiguration = content
             cell.selectionStyle = .none
@@ -91,7 +101,7 @@ final class SettingsTableViewController: UITableViewController {
             return cell
             
             // row with subtitle
-        case .rowWSubtitle:
+        case .rowWithSubtitle:
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             
             // config
@@ -135,9 +145,59 @@ final class SettingsTableViewController: UITableViewController {
         }
     }
     
+    // MARK: Misc methods
     private func setupTableView() {
         tableView.separatorStyle = .none
         tableView.separatorColor = .clear
+        tableView = UITableView(frame: .zero, style: .insetGrouped)
     }
 
+    
+    // MARK: Transitions
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // release selection of row
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // get specific row
+        let row = sections[indexPath.section].rows[indexPath.row]
+        
+        switch row.style {
+        case .rowWithSubtitle:
+            // create vc for specific cell
+            let locationVC = LocationViewController()
+            locationVC.title = "Select Location"
+            locationVC.navigationItem.largeTitleDisplayMode = .never
+            
+            // transition to location screen
+            navigationController?.pushViewController(locationVC, animated: true)
+        case .disclosure:
+            if row.title == "Purpose" {
+                let purposeVC = PurposeViewController()
+                purposeVC.navigationItem.largeTitleDisplayMode = .never
+                navigationController?.pushViewController(purposeVC, animated: true)
+            } else if row.title == "About" {
+                let aboutVC = AboutViewController()
+                aboutVC.navigationItem.largeTitleDisplayMode = .never
+                navigationController?.pushViewController(aboutVC, animated: true)
+            }
+            
+            
+        case .button:
+            let coffeeVC = CoffeeViewController()
+            navigationController?.popToViewController(coffeeVC, animated: true)
+        case .rowValue:
+            print("nothing here")
+        default:
+            print("wrong vc")
+        }
+    }
+    
+    // MARK: UINavControllerDelegate
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if viewController is PurposeViewController || viewController is AboutViewController {
+            navigationController.navigationBar.prefersLargeTitles = false
+        } else {
+            navigationController.navigationBar.prefersLargeTitles = true
+        }
+    }
 }

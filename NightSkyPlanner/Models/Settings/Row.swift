@@ -12,7 +12,7 @@ enum RowStyle {
     case switchToggle // switch
     case button // eg. clear cache
     case rowValue
-    case rowWSubtitle
+    case rowWithSubtitle
 }
 
 struct Row {
