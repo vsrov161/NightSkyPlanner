@@ -11,6 +11,7 @@ enum RowStyle {
     case disclosure // arrow, transition to submenu
     case switchToggle // switch
     case button // eg. clear cache
+    case rowValue
 }
 
 struct Row {

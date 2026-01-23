@@ -13,13 +13,14 @@ final class SettingsTableViewController: UITableViewController {
     private var sections = [
         Section(title: "General", rows: [
             Row(title: "Location", style: .disclosure, value: nil),
-            Row(title: "Night mode", style: .switchToggle, value: true),
-            Row(title: "Notification", style: .switchToggle, value: false)
+            Row(title: "Night mode", style: .switchToggle, value: false),
+            Row(title: "Notifications", style: .switchToggle, value: false)
         ]),
         Section(title: "About", rows: [
             Row(title: "Purpose", style: .disclosure, value: nil),
             Row(title: "About Author", style: .disclosure, value: nil),
-            Row(title: "Buy me a ☕️", style: .button, value: nil)
+            Row(title: "Buy me a ☕️", style: .button, value: nil),
+            Row(title: "Created by Vic Sergeev", style: .rowValue, value: nil)
         ])
     ]
 
@@ -33,12 +34,10 @@ final class SettingsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return sections[section].rows.count
     }
     
@@ -56,7 +55,8 @@ final class SettingsTableViewController: UITableViewController {
             
             let toggle = UISwitch()
             toggle.isOn = (row.value as? Bool) ?? false
-            toggle.tag = indexPath.section * 1000 + indexPath.row
+            toggle.tag = indexPath.section * 1000 + indexPath.row // unique ID for each switch
+            // e.g. night mode 0 * 1000 + 1 = 1 or notification 0 * 1000 + 2(indexPath.row) = 2
             toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
             // save indexPath in property to keep track of what exactly changed
             
@@ -74,14 +74,28 @@ final class SettingsTableViewController: UITableViewController {
             cell.textLabel?.text = row.title
             cell.textLabel?.textColor = .systemOrange
             return cell
+            
+        case .rowValue:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            // since textLabel will be depricated in future version of UIKit use UIListContentConfiguration
+            
+            // create config
+            var content = cell.defaultContentConfiguration()
+            content.text = row.title
+            content.textProperties.color = .blue
+            
+            cell.contentConfiguration = content
+            
+            return cell
         }
     }
     
     // MARK: Actions
     @objc private func switchToggled(_ sender: UISwitch) {
         // decode indexPath from tag
-        let section = sender.tag / 1000
-        let row = sender.tag % 1000
+        let section = sender.tag / 1000 // number of section
+        let row = sender.tag % 1000 // number of row
+        // therefore we know that changed switch of specific section/row
         
         // update value in model
         if section < sections.count && row < sections[section].rows.count {
