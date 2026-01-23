@@ -203,6 +203,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             if row.title == "Buy me a ☕️" {
                 // modal
                 let coffeeVC = CoffeeViewController()
+                coffeeVC.view.backgroundColor = .systemBackground
                 
                 coffeeVC.modalPresentationStyle = .pageSheet
                 if let sheet = coffeeVC.sheetPresentationController {
@@ -212,8 +213,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 } else {
                     coffeeVC.modalPresentationStyle = .formSheet
                 }
-                
-                coffeeVC.view.backgroundColor = .systemBackground
                 
                 coffeeVC.modalTransitionStyle = .coverVertical
                 present(coffeeVC, animated: true)
