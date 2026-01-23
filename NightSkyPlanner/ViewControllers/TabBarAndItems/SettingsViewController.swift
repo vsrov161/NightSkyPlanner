@@ -176,32 +176,32 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch row.style {
         case .rowWithSubtitle:
             // create vc for specific cell
-//            let locationVC = LocationViewController()
-//            locationVC.title = "Select Location"
-//
-//            // transition to location screen
-//            navigationController?.pushViewController(locationVC, animated: true)
-            
-            let vc = UIViewController() as? LocationViewController
-            vc?.view.backgroundColor = .systemRed
-            vc?.title = "TEST"
-            navigationController?.pushViewController(vc ?? UIViewController(), animated: true)
+            let locationVC = LocationViewController()
+            locationVC.title = "Set Location"
+            locationVC.navigationItem.largeTitleDisplayMode = .never
+            locationVC.view.backgroundColor = .systemBackground
+
+            // transition to location screen
+            navigationController?.pushViewController(locationVC, animated: true)
 
             
         case .disclosure:
             if row.title == "Purpose" {
                 let purposeVC = PurposeViewController()
                 purposeVC.navigationItem.largeTitleDisplayMode = .never
+                purposeVC.view.backgroundColor = .systemBackground
                 navigationController?.pushViewController(purposeVC, animated: true)
             } else if row.title == "About Author" {
                 let aboutVC = AboutViewController()
                 aboutVC.navigationItem.largeTitleDisplayMode = .never
+                aboutVC.view.backgroundColor = .systemBackground
                 navigationController?.pushViewController(aboutVC, animated: true)
             }
             
             
         case .button:
             let coffeeVC = CoffeeViewController()
+            coffeeVC.view.backgroundColor = .systemBackground
             navigationController?.pushViewController(coffeeVC, animated: true)
         case .rowValue:
             print("nothing here")
