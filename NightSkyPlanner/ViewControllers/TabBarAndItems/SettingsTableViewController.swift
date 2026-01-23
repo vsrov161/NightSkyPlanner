@@ -12,7 +12,7 @@ final class SettingsTableViewController: UITableViewController {
     // MARK: menu sections
     private var sections = [
         Section(title: "General", rows: [
-            Row(title: "Location", style: .disclosure, value: nil),
+            Row(title: "Location", style: .rowWSubtitle, value: nil),
             Row(title: "Night mode", style: .switchToggle, value: false),
             Row(title: "Notifications", style: .switchToggle, value: false)
         ]),
@@ -29,6 +29,7 @@ final class SettingsTableViewController: UITableViewController {
 
         title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = true
+        setupTableView()
     }
 
     // MARK: - Table view data source
@@ -85,9 +86,40 @@ final class SettingsTableViewController: UITableViewController {
             content.textProperties.color = .blue
             
             cell.contentConfiguration = content
+            cell.selectionStyle = .none
+            
+            return cell
+            
+            // row with subtitle
+        case .rowWSubtitle:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            
+            // config
+            var content = cell.defaultContentConfiguration()
+            
+            // main text
+            content.text = row.title
+            content.textProperties.font = .systemFont(ofSize: 20, weight: .regular)
+            
+            // secondary text
+            content.secondaryText = "Location not set"
+            content.secondaryTextProperties.font = .systemFont(ofSize: 14)
+            content.secondaryTextProperties.color = .systemGray
+            content.secondaryTextProperties.numberOfLines = 0 // multiline row
+            
+            // vertical margins
+            content.directionalLayoutMargins = NSDirectionalEdgeInsets(
+                top: 14, leading: 16, bottom: 14, trailing: 16
+            )
+            
+            // implement settings
+            cell.contentConfiguration = content
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .default
             
             return cell
         }
+        
     }
     
     // MARK: Actions
@@ -101,6 +133,11 @@ final class SettingsTableViewController: UITableViewController {
         if section < sections.count && row < sections[section].rows.count {
             sections[section].rows[row].value = sender.isOn
         }
+    }
+    
+    private func setupTableView() {
+        tableView.separatorStyle = .none
+        tableView.separatorColor = .clear
     }
 
 }
