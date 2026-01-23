@@ -12,7 +12,7 @@ final class ROIViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Places"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
     }
     
 

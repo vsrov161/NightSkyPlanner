@@ -11,14 +11,15 @@ final class MainTabBarController: UITabBarController {
     
     // MARK: TabBar Items
     private let homeVC = UINavigationController(rootViewController: HomeViewController())
-    private let notesVC = UINavigationController(rootViewController: NotesTableViewController())
+    private let notesVC = UINavigationController(rootViewController: NotesViewController())
     private let ROIsVC = UINavigationController(rootViewController: ROIViewController())
-    private let settingsVC = UINavigationController(rootViewController: SettingsTableViewController())
+    private let settingsVC = UINavigationController(rootViewController: SettingsViewController())
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTabBarItems()
+        configureNavigationControllers()
     }
 
 
@@ -43,5 +44,24 @@ extension MainTabBarController {
         )
         
         viewControllers = [homeVC, notesVC, ROIsVC, settingsVC]
+    }
+    
+    private func configureNavigationControllers() {
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
+        
+        [homeVC, notesVC, ROIsVC, settingsVC].forEach { nav in
+            nav.navigationBar.isTranslucent = false
+            nav.navigationBar.standardAppearance = appearance
+            nav.navigationBar.scrollEdgeAppearance = appearance
+            nav.navigationBar.compactAppearance = appearance
+        }
+        
+        homeVC.navigationBar.prefersLargeTitles = true
+        notesVC.navigationBar.prefersLargeTitles = true
+        ROIsVC.navigationBar.prefersLargeTitles = true
+        settingsVC.navigationBar.prefersLargeTitles = false
     }
 }

@@ -1,5 +1,5 @@
 //
-//  HomeViewController.swift
+//  NotesTableViewController.swift
 //  NightSkyPlanner
 //
 //  Created by Vic on 22.01.2026.
@@ -7,12 +7,13 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class NotesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = "Home"
+        
+        title = "Observations"
         navigationItem.largeTitleDisplayMode = .always
     }
+
 }

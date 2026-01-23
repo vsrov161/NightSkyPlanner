@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewController.swift
+//  SettingsViewController.swift
 //  NightSkyPlanner
 //
 //  Created by Vic on 22.01.2026.
@@ -7,7 +7,9 @@
 
 import UIKit
 
-final class SettingsTableViewController: UITableViewController, UINavigationControllerDelegate {
+final class SettingsViewController: UIViewController {
+    
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     // MARK: menu sections
     private var sections = [
@@ -29,34 +31,51 @@ final class SettingsTableViewController: UITableViewController, UINavigationCont
         super.viewDidLoad()
         
         title = "Settings"
-        navigationController?.navigationBar.prefersLargeTitles = false
-        
-        navigationController?.delegate = self
+        navigationItem.largeTitleDisplayMode = .never
         
         setupTableView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.sizeToFit()
+    // MARK: UITableView settings
+    private func setupTableView() {
+        
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        tableView.separatorStyle = .none
+        tableView.separatorColor = .clear
     }
 
+    
+}
+
+extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].rows.count
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].title
     }
     
     // MARK: Cells
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
         
         switch row.style {
@@ -144,17 +163,10 @@ final class SettingsTableViewController: UITableViewController, UINavigationCont
             sections[section].rows[row].value = sender.isOn
         }
     }
-    
-    // MARK: Misc methods
-    private func setupTableView() {
-        tableView.separatorStyle = .none
-        tableView.separatorColor = .clear
-        tableView = UITableView(frame: .zero, style: .insetGrouped)
-    }
 
     
     // MARK: Transitions
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // release selection of row
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -164,18 +176,24 @@ final class SettingsTableViewController: UITableViewController, UINavigationCont
         switch row.style {
         case .rowWithSubtitle:
             // create vc for specific cell
-            let locationVC = LocationViewController()
-            locationVC.title = "Select Location"
-            locationVC.navigationItem.largeTitleDisplayMode = .never
+//            let locationVC = LocationViewController()
+//            locationVC.title = "Select Location"
+//
+//            // transition to location screen
+//            navigationController?.pushViewController(locationVC, animated: true)
             
-            // transition to location screen
-            navigationController?.pushViewController(locationVC, animated: true)
+            let vc = UIViewController() as? LocationViewController
+            vc?.view.backgroundColor = .systemRed
+            vc?.title = "TEST"
+            navigationController?.pushViewController(vc ?? UIViewController(), animated: true)
+
+            
         case .disclosure:
             if row.title == "Purpose" {
                 let purposeVC = PurposeViewController()
                 purposeVC.navigationItem.largeTitleDisplayMode = .never
                 navigationController?.pushViewController(purposeVC, animated: true)
-            } else if row.title == "About" {
+            } else if row.title == "About Author" {
                 let aboutVC = AboutViewController()
                 aboutVC.navigationItem.largeTitleDisplayMode = .never
                 navigationController?.pushViewController(aboutVC, animated: true)
@@ -184,20 +202,12 @@ final class SettingsTableViewController: UITableViewController, UINavigationCont
             
         case .button:
             let coffeeVC = CoffeeViewController()
-            navigationController?.popToViewController(coffeeVC, animated: true)
+            navigationController?.pushViewController(coffeeVC, animated: true)
         case .rowValue:
             print("nothing here")
         default:
             print("wrong vc")
-        }
-    }
-    
-    // MARK: UINavControllerDelegate
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        if viewController is PurposeViewController || viewController is AboutViewController {
-            navigationController.navigationBar.prefersLargeTitles = false
-        } else {
-            navigationController.navigationBar.prefersLargeTitles = true
+            break
         }
     }
 }
