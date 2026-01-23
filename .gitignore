@@ -1,0 +1,58 @@
+# Xcode
+.DS_Store
+*/xcuserdata/
+*.xcuserstate
+UserInterfaceState.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.xcworkspace/contents.xcworkspacedata
+
+# Swift Package Manager
+.build/
+Packages/
+.swiftpm/
+.xcode/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/Build/
+
+# Swift
+*.swp
+*.swo
+
+# Билды
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Профили
+*.mobileprovision
+*.signing
+
+# Симуляторы
+*.simruntime/
+
+# JetBrains IDE
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Актуально для 2026
+.metalfeaturemap
+.swiftlint.yml
+.tuist/
+tuistenv.log
