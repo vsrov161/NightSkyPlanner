@@ -15,12 +15,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = scene as? UIWindowScene else { return }
         let window = UIWindow(windowScene: windowScene)
         window.frame = windowScene.coordinateSpace.bounds
+        self.window = window
         
         // MARK: coordinator
         let coordinator = AppCoordinator(window: window)
         coordinator.start()
-        
-        self.window = window
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

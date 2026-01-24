@@ -151,9 +151,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             }
         case .rowValue:
             print("nothing here")
-        default:
-            print("wrong vc")
-            break
+        case .switchToggle:
+            print("switch toggle interacted")
         }
     }
     
@@ -162,7 +161,13 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch row.style {
         case .switchToggle:
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = row.title
+            
+            var content = cell.defaultContentConfiguration()
+            content.text = row.title
+            cell.contentConfiguration = content
+            
+            cell.selectionStyle = .none
+            cell.accessoryType = .none
             
             let toggle = UISwitch()
             toggle.isOn = (row.value as? Bool) ?? false
@@ -176,7 +181,9 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
         case .disclosure:
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-            cell.textLabel?.text = row.title
+            var content = cell.defaultContentConfiguration()
+            content.text = row.title
+            cell.contentConfiguration = content
             cell.accessoryType = .disclosureIndicator
             return cell
             
