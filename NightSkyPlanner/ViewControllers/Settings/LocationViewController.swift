@@ -7,12 +7,11 @@
 
 import UIKit
 
-class LocationViewController: UIViewController {
+final class LocationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
     }
-
 }
