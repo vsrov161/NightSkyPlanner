@@ -16,6 +16,7 @@ For practicing I'm going to use NSLayoutConstrains as well as SnapKit, and URLSe
 - URLComponents
 - SnapKit
 - CoreData
+- MapKit + CoreLocation
 
 #### Planned features and ideas
 - Home Screen with current weather, sun clock and current Moon Phase
