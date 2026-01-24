@@ -12,7 +12,7 @@ final class MainTabBarController: UITabBarController {
     // MARK: TabBar Items
     private let homeVC = UINavigationController(rootViewController: HomeViewController())
     private let notesVC = UINavigationController(rootViewController: NotesViewController())
-    private let ROIsVC = UINavigationController(rootViewController: ROIViewController())
+    private let ROIsVC = UINavigationController(rootViewController: MapViewController())
     private let settingsVC = UINavigationController(rootViewController: SettingsViewController())
 
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ extension MainTabBarController {
         )
         
         ROIsVC.tabBarItem = UITabBarItem(
-            title: "ROIs", image: UIImage(systemName: "mappin.square.fill"), tag: 2
+            title: "Places", image: UIImage(systemName: "mappin.square.fill"), tag: 2
         )
         
         settingsVC.tabBarItem = UITabBarItem(

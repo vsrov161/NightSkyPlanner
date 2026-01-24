@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-final class ROIViewController: UIViewController {
+final class MapViewController: UIViewController {
     
     // object that works with geolocation
     private let locationManager = CLLocationManager()
@@ -22,7 +22,6 @@ final class ROIViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Places"
         navigationItem.largeTitleDisplayMode = .always
         
         setupMapView()
@@ -87,7 +86,7 @@ final class ROIViewController: UIViewController {
 }
 
 // MARK: CLLocation manager delegate
-extension ROIViewController: CLLocationManagerDelegate {
+extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // update ui here if new data arrived
     }
