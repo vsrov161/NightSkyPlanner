@@ -21,7 +21,7 @@ final class SettingsViewController: UIViewController {
         Section(title: "About", rows: [
             Row(title: "Purpose", style: .disclosure, value: nil),
             Row(title: "About Author", style: .disclosure, value: nil),
-            Row(title: "Buy me a ☕️", style: .button, value: nil),
+            Row(title: "Rate app at GitHub", style: .button, value: nil),
         ])
     ]
 
@@ -132,22 +132,22 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             
             
         case .button:
-            if row.title == "Buy me a ☕️" {
+            if row.title == "Rate app at GitHub" {
                 // modal
-                let coffeeVC = CoffeeViewController()
-                coffeeVC.view.backgroundColor = .systemBackground
+                let rateMeOnGit = RateMeViewController()
+                rateMeOnGit.view.backgroundColor = .systemBackground
                 
-                coffeeVC.modalPresentationStyle = .pageSheet
-                if let sheet = coffeeVC.sheetPresentationController {
+                rateMeOnGit.modalPresentationStyle = .pageSheet
+                if let sheet = rateMeOnGit.sheetPresentationController {
                     sheet.detents = [.medium()]
                     sheet.prefersGrabberVisible = true
                     sheet.preferredCornerRadius = 20
                 } else {
-                    coffeeVC.modalPresentationStyle = .formSheet
+                    rateMeOnGit.modalPresentationStyle = .formSheet
                 }
                 
-                coffeeVC.modalTransitionStyle = .coverVertical
-                present(coffeeVC, animated: true)
+                rateMeOnGit.modalTransitionStyle = .coverVertical
+                present(rateMeOnGit, animated: true)
             }
         case .rowValue:
             print("nothing here")

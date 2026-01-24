@@ -21,8 +21,6 @@ final class MainTabBarController: UITabBarController {
         setupTabBarItems()
         configureNavigationControllers()
     }
-
-
 }
 
 extension MainTabBarController {
