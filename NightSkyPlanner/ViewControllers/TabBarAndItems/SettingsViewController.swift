@@ -22,14 +22,12 @@ final class SettingsViewController: UIViewController {
             Row(title: "Purpose", style: .disclosure, value: nil),
             Row(title: "About Author", style: .disclosure, value: nil),
             Row(title: "Buy me a ☕️", style: .button, value: nil),
-            Row(title: "Created by Vic Sergeev", style: .rowValue, value: nil)
         ])
     ]
 
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         title = "Settings"
         navigationItem.largeTitleDisplayMode = .never
         
@@ -59,6 +57,7 @@ final class SettingsViewController: UIViewController {
     
 }
 
+// MARK: Extensions
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     // MARK: - Table view data source
 
@@ -74,81 +73,14 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return sections[section].title
     }
     
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return "Made by Vic Sergeev 2026 ©"
+    }
+    
     // MARK: Cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
-        
-        switch row.style {
-        case .switchToggle:
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = row.title
-            
-            let toggle = UISwitch()
-            toggle.isOn = (row.value as? Bool) ?? false
-            toggle.tag = indexPath.section * 1000 + indexPath.row // unique ID for each switch
-            // e.g. night mode 0 * 1000 + 1 = 1 or notification 0 * 1000 + 2(indexPath.row) = 2
-            toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
-            // save indexPath in property to keep track of what exactly changed
-            
-            cell.accessoryView = toggle
-            return cell
-            
-        case .disclosure:
-            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
-            cell.textLabel?.text = row.title
-            cell.accessoryType = .disclosureIndicator
-            return cell
-            
-        case .button:
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = row.title
-            cell.textLabel?.textColor = .systemOrange
-            return cell
-            
-        case .rowValue:
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            // since textLabel will be depricated in future version of UIKit use UIListContentConfiguration
-            
-            // create config
-            var content = cell.defaultContentConfiguration()
-            content.text = row.title
-            content.textProperties.color = .green
-            
-            cell.contentConfiguration = content
-            cell.selectionStyle = .none
-            
-            return cell
-            
-            // row with subtitle
-        case .rowWithSubtitle:
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            
-            // config
-            var content = cell.defaultContentConfiguration()
-            
-            // main text
-            content.text = row.title
-            content.textProperties.font = .systemFont(ofSize: 20, weight: .regular)
-            
-            // secondary text
-            content.secondaryText = "Location not set"
-            content.secondaryTextProperties.font = .systemFont(ofSize: 14)
-            content.secondaryTextProperties.color = .systemGray
-            content.secondaryTextProperties.numberOfLines = 0 // multiline row
-            
-            // vertical margins
-            content.directionalLayoutMargins = NSDirectionalEdgeInsets(
-                top: 14, leading: 16, bottom: 14, trailing: 16
-            )
-            
-            // implement settings
-            cell.contentConfiguration = content
-            cell.accessoryType = .disclosureIndicator
-            cell.selectionStyle = .default
-            
-            return cell
-        }
-        
+        return makeCell(for: row, at: indexPath)
     }
     
     // MARK: Actions
@@ -222,6 +154,80 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             print("wrong vc")
             break
+        }
+    }
+    
+    // MARK: Cell factory
+    private func makeCell(for row: Row, at indexPath: IndexPath) -> UITableViewCell {
+        switch row.style {
+        case .switchToggle:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            
+            let toggle = UISwitch()
+            toggle.isOn = (row.value as? Bool) ?? false
+            toggle.tag = indexPath.section * 1000 + indexPath.row // unique ID for each switch
+            // e.g. night mode 0 * 1000 + 1 = 1 or notification 0 * 1000 + 2(indexPath.row) = 2
+            toggle.addTarget(self, action: #selector(switchToggled(_:)), for: .valueChanged)
+            // save indexPath in property to keep track of what exactly changed
+            
+            cell.accessoryView = toggle
+            return cell
+            
+        case .disclosure:
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            cell.accessoryType = .disclosureIndicator
+            return cell
+            
+        case .button:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = row.title
+            cell.textLabel?.textColor = .systemOrange
+            return cell
+            
+        case .rowValue:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            // since textLabel will be depricated in future version of UIKit use UIListContentConfiguration
+            
+            // create config
+            var content = cell.defaultContentConfiguration()
+            content.text = row.title
+            content.textProperties.color = .green
+            
+            cell.contentConfiguration = content
+            cell.selectionStyle = .none
+            
+            return cell
+            
+            // row with subtitle
+        case .rowWithSubtitle:
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            
+            // config
+            var content = cell.defaultContentConfiguration()
+            
+            // main text
+            content.text = row.title
+            content.textProperties.font = .systemFont(ofSize: 20, weight: .regular)
+            
+            // secondary text
+            content.secondaryText = "Location not set"
+            content.secondaryTextProperties.font = .systemFont(ofSize: 14)
+            content.secondaryTextProperties.color = .systemGray
+            content.secondaryTextProperties.numberOfLines = 0 // multiline row
+            
+            // vertical margins
+            content.directionalLayoutMargins = NSDirectionalEdgeInsets(
+                top: 14, leading: 16, bottom: 14, trailing: 16
+            )
+            
+            // implement settings
+            cell.contentConfiguration = content
+            cell.accessoryType = .disclosureIndicator
+            cell.selectionStyle = .default
+            
+            return cell
         }
     }
 }

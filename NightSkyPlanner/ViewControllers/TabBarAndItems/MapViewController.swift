@@ -22,8 +22,6 @@ final class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.largeTitleDisplayMode = .always
-        
         setupMapView()
         setupLocateButton()
         setupLocationManager()
