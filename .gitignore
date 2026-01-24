@@ -57,3 +57,4 @@ DerivedData/
 .tuist/
 tuistenv.log
 NightSkyPlanner.xcodeproj/project.xcworkspace/xcuserdata/user.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserstate
