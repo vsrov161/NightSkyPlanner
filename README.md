@@ -1,5 +1,5 @@
 # NightSkyPlanner
-An advanced notes tool for astronomers and astrophotographers
+Smart notes tool for astronomers and astrophotographers
 
 Night Sky Planner is a work-in-progress tool designed to help plan astronomical observations and photo sessions. It allows tracking the time when a specific star or celestial object appears in the observer’s field of view.
 
