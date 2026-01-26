@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import SnapKit
 
 final class MapViewController: UIViewController {
     
@@ -27,7 +28,26 @@ final class MapViewController: UIViewController {
         setupLocationManager()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     private func setupMapView() {
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        
         mapView = MKMapView()
         
         mapView.translatesAutoresizingMaskIntoConstraints = false

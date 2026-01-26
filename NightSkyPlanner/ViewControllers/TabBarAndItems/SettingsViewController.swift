@@ -74,7 +74,11 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return "Made by Vic Sergeev 2026 ©"
+        var text = ""
+        if sections[section].title == "About" {
+            text = "Made by Vic Sergeev 2026 ©"
+        }
+        return text
     }
     
     // MARK: Cells

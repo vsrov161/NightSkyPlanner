@@ -17,13 +17,14 @@ final class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         setupTabBarItems()
         configureNavigationControllers()
     }
 }
 
 extension MainTabBarController {
+    
     func setupTabBarItems() {
         homeVC.tabBarItem = UITabBarItem(
             title: "Home", image: UIImage(systemName: "house.fill"), tag: 0
